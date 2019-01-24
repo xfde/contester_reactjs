@@ -25,12 +25,16 @@ import Moment from 'react-moment';
 import 'moment-timezone';
 import 'moment/locale/ro';
 
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css' 
+
 import './App.css';
 import MediaCard from "./comp/card";
 import database, { firebase } from "./firebase/firebase";
 import { object } from 'prop-types';
 import { timeout } from 'q';
 import moment from 'moment';
+import { relative } from 'path';
 // import moment = require('../../../../AppData/Local/Microsoft/TypeScript/3.2/node_modules/moment/moment');
 
 
@@ -117,6 +121,11 @@ const styles = theme => ({
     position: "arelative",
     marginRight: "2%",
 
+  },
+  submitDialog:{
+    position: relative,
+    width: "200px",
+    height: "170px",
   },
   inputInput: {
     paddingTop: theme.spacing.unit,
@@ -231,8 +240,33 @@ class App extends React.Component {
     });
   };
 
+  handleSubmit = (object,index) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='custom-ui'>
+            <h1>Are you sure?</h1>
+            <p>You want to delete this ?</p>
+            <Button variant="text" display="block" style={{ margin:'auto',display:'block', color:"red"  }} onClick={onClose}>No</Button>
+            <Button variant="outlined" style={{ margin:'auto',display:'block', color:"blue"  }}  onClick={() => {
+                this.triggerDelete(object,index)
+                onClose()
+            }}>Yes, Delete it!</Button>
+          </div>
+        )
+      }
+    })
+  };
+
   handleClose = () => {
     this.setState({
+      name: '',
+      descriere: '',
+      organizator: '',
+      id: '',
+      col: '',
+      link: '',
+      data: new Date(),
       open: false,
       isEdit: false
     });
@@ -438,7 +472,7 @@ class App extends React.Component {
       });
     }
     if(this.state.id==='altele'){
-      var altele = this.state.altele;
+     var altele = this.state.altele;
       altele[this.state.editIndex] = {
         name: this.state.name,
         descriere: this.state.descriere,
@@ -487,10 +521,7 @@ class App extends React.Component {
       data: date
     });
   }  
-  // formatDate(string){
-  //   var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  //   return new Date(string).toLocaleDateString([],options);
-  // }
+
   showDetails = (e, object, index) => {
     console.log('object', object, this.state)
 
@@ -526,7 +557,7 @@ class App extends React.Component {
 
     );
   }
-  if(object.id=='concursuri'){
+  if(object.id==='concursuri'){
      console.log('Deleted concurs:',object);
     let concursuri = [...this.state.concursuri]
     concursuri.splice(index, 1);
@@ -539,7 +570,7 @@ class App extends React.Component {
 
     );
   }
-  if(object.id=='altele'){ 
+  if(object.id==='altele'){ 
     console.log('Deleted altele:',object);
     let altele = [...this.state.altele]
     altele.splice(index, 1);
@@ -628,6 +659,7 @@ class App extends React.Component {
         {this.state.filterolimpiade.map((object,index) => 
             <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
               <MediaCard data={object}  clickFunction = {(e)=>{ this.showDetails(e,object, index)}} 
+                                        confirmDelete={(e)=>{this.handleSubmit(object,index)}} 
                                       deleteFunction = {(e)=>{ e.stopPropagation();e.preventDefault();this.triggerDelete( object, index); }}/>
             </Grid>
           )}
@@ -640,6 +672,7 @@ class App extends React.Component {
         {this.state.filterconcursuri.map((object,index) => 
         <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
           <MediaCard data={object}  clickFunction = {(e)=>{ this.showDetails(e,object, index)}} 
+                                    confirmDelete={(e)=>{this.handleSubmit(object,index)}} 
                                   deleteFunction = {(e)=>{ e.stopPropagation();e.preventDefault();this.triggerDelete(object, index); }}/>
         </Grid>
       )}
@@ -651,7 +684,8 @@ class App extends React.Component {
         <Grid container spacing ={32}>
         {this.state.filteraltele.map((object,index) => 
         <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-          <MediaCard data={object}  clickFunction = {(e)=>{ this.showDetails(e,object, index)}} 
+          <MediaCard data={object}  clickFunction = {(e)=>{ this.showDetails(e,object, index)}}
+                                    confirmDelete={(e)=>{this.handleSubmit(object,index)}} 
                                   deleteFunction = {(e)=>{ e.stopPropagation();e.preventDefault();this.triggerDelete(object, index); }}/>
         </Grid>
       )}
@@ -685,9 +719,6 @@ class App extends React.Component {
         {/* <FormHelperText>Alegeti tipul evenimentului.</FormHelperText> */}
       </FormControl>
 
-          {/* /* <Typography variant="subtitle1" id="simple-modal-description">
-            Adougati numele si descrierea concursului.
-          </Typography> */ }
           <form className={classes.container}  noValidate autoComplete="off">
 
             <TextField
@@ -729,9 +760,9 @@ class App extends React.Component {
               />
               <DatePicker 
                 padding="5px"
-                Onselected={this.hSelect()}
-                onChange= {this.handleChangeD} //only when value has changed
-                // withPortal
+                selected={this.hSelect()}
+                onChange= {this.handleChangeD} 
+                withPortal
                 showTimeSelect
                 timeFormat="HH:mm"
                 timeIntervals={60}

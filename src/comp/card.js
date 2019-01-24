@@ -8,11 +8,14 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Moment from 'react-moment';
 import 'moment-timezone';
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css' 
 const styles={
  
-};
+};  
 
 function MediaCard(props) {
+
   const { classes, data } = props;
   return (
     <Card className={classes.card}>
@@ -42,7 +45,7 @@ function MediaCard(props) {
           <Button size="small" color="primary" onClick={props.clickFunction} >
           Edit
         </Button>
-        <Button size="small" color="secondary" onClick = {props.deleteFunction}>
+        <Button size="small" color="secondary" onClick = {props.confirmDelete}>
           Delete
         </Button>
 
