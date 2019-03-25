@@ -9,15 +9,19 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import pan from './Primalcontesterbanner.png';
+import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
+
 import Signup from "./Signup"
 import {Link} from "react-router"
 
 
 
 const styles = theme => ({
+  root:{
+      flexGrow:1,
+  },
   card: {
-    width: "700px",
-    height : "300px"
     
   },
  
@@ -38,17 +42,16 @@ const styles = theme => ({
   },
 
   theform:{
-    marginTop: "12%",
-    marginLeft: "6%"
+
 
     
   },
   title:{
-    fontSize : '1.5em',
+    fontSize : '1em',
     marginBlockStart: "0.3em",
     marginInlineStart: "0px",
     marginInlineEnd: "0px",
-    fontWeight: 'bold',
+    color:"#989898"
    
   },
 
@@ -57,7 +60,10 @@ const styles = theme => ({
     objectFit: "cover"
   },
   button1: {
-    float: "right"
+    
+    float: "none",
+    justifyContent: "center",
+    alignItems: 'center'
   },
   pass:{
     paddingRight : "46px"
@@ -112,22 +118,27 @@ class Login extends Component {
     return (
       
       
-      <div className="col-md-6" >
-      
-      <form className={classes.theform}>
-      
 
-      <Grid container spacing={8}>
-        <Grid item xs={12} sm={12} md={3} lg={3}></Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6}>
+
+<div style={{maxHeight: "100%",background: 'linear-gradient(to right bottom, #4286f4, #373B44)'}}>
+   
+  <img style={{width:"100%",position:"absolute",maxHeight:"180px"}} src={pan}/>
+  
+
+
+  <Grid container
+        spacing={0}
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: '100vh' }}>
+          <Grid item xs={10} md={6}>
+
+  <form className={classes.theform} >
+
         <Card className={classes.card}>
           
             <CardContent>
-              
-              <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
-                Login Page
-              </Typography>
-              
+
               <Typography component="p" className={classes.textFields}>
                 <form className={classes.container} noValidate autoComplete="off">
                 <div class="form-group">
@@ -162,6 +173,10 @@ class Login extends Component {
                 </div>
                 </form>
               </Typography>
+              &nbsp;
+              <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
+                *Login with your Admin account. If you don't have one, request it here.<Button size="small" color="primary">Get account</Button>
+              </Typography>
             </CardContent>
           
           <CardActions className={classes.button1}>
@@ -178,13 +193,13 @@ class Login extends Component {
             
           </CardActions>
         </Card>
-        </Grid>
-      </Grid>
+
       
-      </form>
-      
-    </div>
-    
+    </form>
+    </Grid>
+    </Grid>
+ </div>
+
     );
     
   }

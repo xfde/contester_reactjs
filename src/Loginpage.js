@@ -61,11 +61,11 @@ class Loginpage extends Component {
     return (
       <div className="Loginpage">
       <div className={classes.root}>
-      <AppBar position="static" className={classes.appbarforlogin}>
+      {/* <AppBar position="static" className={classes.appbarforlogin}>
         <Toolbar >
-          <Button href="/signup" color="inherit" className={classes.signupbar}> Signup</Button>
+          <Button href="/signup" color="inherit" className={classes.signupbar}> Sign up</Button>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       </div>
         <Login history={this.props.history} />
       </div>
