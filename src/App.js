@@ -302,7 +302,7 @@ class App extends React.Component {
         organizator: this.state.organizator,
         id: this.state.id,
         link: this.state.link,
-        data: this.state.data,
+        data: this.state.data.toString(),
         user:  this.state.user
       }).then(() => {
         console.log('Data is saved!');
@@ -340,7 +340,7 @@ class App extends React.Component {
         id: this.state.id,
         col: "#00e676",
         link: this.state.link,
-        data: this.state.data,
+        data: this.state.data.toString(),
         user:  this.state.user
       }).then(() => {
         console.log('Data is saved!');
@@ -377,7 +377,7 @@ class App extends React.Component {
         organizator: this.state.organizator,
         id: this.state.id,
         link: this.state.link,
-        data: this.state.data,
+        data: this.state.data.toString(),
         col: "#ffe066",
         user:  this.state.user
       }).then(() => {
@@ -655,9 +655,9 @@ class App extends React.Component {
       <p style={{fontSize:20}}>Olimpiade</p>
           <Divider variant="middle" style={{margin:15}}  />
 
-        <Grid container spacing ={32}>
+        <Grid container spacing ={16}>
         {this.state.filterolimpiade.map((object,index) => 
-            <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+            <Grid key={index} item xs={12} sm={8} md={4} lg={3}>
               <MediaCard data={object}  clickFunction = {(e)=>{ this.showDetails(e,object, index)}} 
                                         confirmDelete={(e)=>{this.handleSubmit(object,index)}} 
                                       deleteFunction = {(e)=>{ e.stopPropagation();e.preventDefault();this.triggerDelete( object, index); }}/>
@@ -668,9 +668,9 @@ class App extends React.Component {
           <p style={{fontSize:20}}>Concursuri</p>
           <Divider variant="middle" style={{margin:15}}  />
 
-        <Grid container spacing ={32}>
+        <Grid container spacing ={16}>
         {this.state.filterconcursuri.map((object,index) => 
-        <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+        <Grid key={index} item xs={12} sm={8} md={4} lg={3}>
           <MediaCard data={object}  clickFunction = {(e)=>{ this.showDetails(e,object, index)}} 
                                     confirmDelete={(e)=>{this.handleSubmit(object,index)}} 
                                   deleteFunction = {(e)=>{ e.stopPropagation();e.preventDefault();this.triggerDelete(object, index); }}/>
@@ -681,9 +681,9 @@ class App extends React.Component {
         <p style={{fontSize:20}}>Altele</p>
           <Divider variant="middle" style={{margin:15}}  />
 
-        <Grid container spacing ={32}>
+        <Grid container spacing ={16}>
         {this.state.filteraltele.map((object,index) => 
-        <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+        <Grid key={index} item xs={12} sm={8} md={4} lg={3}>
           <MediaCard data={object}  clickFunction = {(e)=>{ this.showDetails(e,object, index)}}
                                     confirmDelete={(e)=>{this.handleSubmit(object,index)}} 
                                   deleteFunction = {(e)=>{ e.stopPropagation();e.preventDefault();this.triggerDelete(object, index); }}/>
@@ -741,7 +741,7 @@ class App extends React.Component {
               id="standard-multiline-flexible"
               label="Descriere"
               multiline
-              rowsMax="3"
+              rowsMax="2"
               value={this.state.descriere}
               onChange={this.handleChange('descriere')}
               className={classes.textField}
@@ -751,13 +751,14 @@ class App extends React.Component {
               id="standard-multiline-flexible"
               label="Link"
               multiline
-              rowsMax="2"
+              rowsMax="1"
               value={this.state.link}
               onChange={this.handleChange('link')}
               className={classes.textField}
               margin="normal"
               fullWidth={true}
               />
+              
               <DatePicker 
                 padding="5px"
                 selected={this.hSelect()}
@@ -771,7 +772,7 @@ class App extends React.Component {
                 placeholderText="Click to select a date"
                 />
                 &nbsp;
-              <Button variant="contained" style={{ margin:'auto',display:'block', color:"primary"  }} className={classes.container} onClick={this.handleSave}>Salveaza</Button>
+                <Button variant="contained" style={{ margin:'auto',display:'block', color:"primary"  }} className={classes.container} onClick={this.handleSave}>Salveaza</Button>
           </form>
           
           
