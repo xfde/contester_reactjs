@@ -122,7 +122,7 @@ class Login extends Component {
 
 <div style={{maxHeight: "100%",background: 'linear-gradient(to right bottom, #4286f4, #373B44)'}}>
    
-  <img style={{width:"100%",position:"absolute",maxHeight:"180px"}} src={pan}/>
+  <img style={{width:"100%",position:"relative",maxHeight:"180px"}} src={pan}/>
   
 
 

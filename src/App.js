@@ -626,7 +626,7 @@ class App extends React.Component {
         <AppBar position="fixed" color="primary" className={classes.appBar}>
           <Toolbar className={styles.toolbar}>
             <Typography variant="h6" color="inherit">
-              Constester
+              Contester
             </Typography>
             <div className={classes.root}>
               <Toolbar>
