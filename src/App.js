@@ -24,19 +24,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import Moment from 'react-moment';
 import 'moment-timezone';
 import 'moment/locale/ro';
-
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css' 
-
 import './App.css';
 import MediaCard from "./comp/card";
+import '@firebase/storage';
 import database, { firebase } from "./firebase/firebase";
 import { object } from 'prop-types';
 import { timeout } from 'q';
 import moment from 'moment';
 import { relative } from 'path';
+import Chip from '@material-ui/core/Chip';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 // import moment = require('../../../../AppData/Local/Microsoft/TypeScript/3.2/node_modules/moment/moment');
-
+//import LabelSelect from 'react-native-label-select';
 
 
 
@@ -71,10 +73,17 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  uploadButton:{
+    position: 'relative',
+    width: "40px",
+    height:"30px",
+    alignItems: 'right',
+    justifyContent: 'center',
+  },
   paper: {
     position: 'relative',
     width: "350px",
-    height: "450px",
+    height: "480px",
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
@@ -141,7 +150,6 @@ const styles = theme => ({
 
 });
 
-
 class App extends React.Component {
 
   constructor() {
@@ -161,17 +169,49 @@ class App extends React.Component {
       descriere: '',
       col: '',
       link:'',
+      image:null,
+      url: '',
       data: new Date(),
       user: localStorage.getItem('user')
       
     }
+    
     this.logout = this.logout.bind(this)
     this.loadData = this.loadData.bind(this)
     this.showDetails = this.showDetails.bind(this);
     this.loadData();
     // this.formatDate = this.formatDate.bind(this);
     this.handleChangeD= this.handleChangeD.bind(this);
+
+
     console.log(this.state, localStorage.getItem('user'));
+    this.handleChangeImage=this.handleChangeImage.bind(this);
+    this.handleUpload=this.handleUpload.bind(this);
+  }
+  //newer functions on top
+  handleChangeImage=e=>{
+    if(e.target.files[0]){
+      const image=e.target.files[0];
+      this.setState({
+        image: image
+       });
+    }
+  }
+  handleUpload = ()=>{
+    const storage = firebase.storage();
+    const img=this.state.image;
+    const id=this.state.name;
+    const uploadTask = storage.ref('images/'+id).put(img);
+    uploadTask.on('state_changed',(snapshot)=>{
+
+    },(error)=>{
+        console.log(error);
+    },()=>{
+      storage.ref('images').child(id).getDownloadURL().then(url=>{
+        this.state.image=null;
+
+      })
+    });
   }
   logout() {
     firebase.auth().signOut();
@@ -268,6 +308,7 @@ class App extends React.Component {
       link: '',
       data: new Date(),
       open: false,
+      image:null,
       isEdit: false
     });
   };
@@ -770,10 +811,16 @@ class App extends React.Component {
                 // dateFormat="DD/MM/YYYY h:mm"
                 timeCaption="Time"
                 placeholderText="Click to select a date"
-                />
+                /> 
+                </form>
+              <input type="file" onChange={this.handleChangeImage}/>
+              <Button style={styles.uploadButton} variant="text" color="primary" onClick={this.handleUpload}>Upload Image
+              <CloudUploadIcon color="primary" className={classes.rightIcon} />
+              </Button>
+
                 &nbsp;
-                <Button variant="contained" style={{ margin:'auto',display:'block', color:"primary"  }} className={classes.container} onClick={this.handleSave}>Salveaza</Button>
-          </form>
+              <Button variant="contained" style={{ margin:'auto',display:'block', color:"info"  }} className={classes.container} onClick={this.handleSave}>Salveaza</Button>
+         
           
           
         </div>
