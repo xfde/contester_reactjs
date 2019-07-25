@@ -29,7 +29,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css' 
 import './App.css';
 import MediaCard from "./comp/card";
-import '@firebase/storage';
+
 import database, { firebase } from "./firebase/firebase";
 import { object } from 'prop-types';
 import { timeout } from 'q';
