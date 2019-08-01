@@ -37,6 +37,7 @@ import moment from 'moment';
 import { relative } from 'path';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {ToastsContainer, ToastsStore} from 'react-toasts';
 // import moment = require('../../../../AppData/Local/Microsoft/TypeScript/3.2/node_modules/moment/moment');
 //import LabelSelect from 'react-native-label-select';
 
@@ -208,8 +209,10 @@ class App extends React.Component {
         console.log(error);
     },()=>{
       storage.ref('images').child(id).getDownloadURL().then(url=>{
+        this.state.url=url;
         this.state.image=null;
-
+        ToastsStore.success("Image uploaded successfully!");
+        ToastsStore.warning("Don't forget to save!");
       })
     });
   }
@@ -299,6 +302,7 @@ class App extends React.Component {
   };
 
   handleClose = () => {
+    ToastsStore.warning("Action cancelled!");
     this.setState({
       name: '',
       descriere: '',
@@ -309,6 +313,7 @@ class App extends React.Component {
       data: new Date(),
       open: false,
       image:null,
+      url:'',
       isEdit: false
     });
   };
@@ -322,6 +327,7 @@ class App extends React.Component {
     
   }
   handleSave = () => {
+    ToastsStore.success("Constest saved!");
     console.log("HandleSave");
     if (!this.state.isEdit) {
       if(this.state.id==='olimpiade'){
@@ -331,6 +337,7 @@ class App extends React.Component {
         descriere: this.state.descriere,
         organizator: this.state.organizator,
         id: this.state.id,
+        url: this.state.url,
         col: "#29b6f6",
         data: this.state.data,
         link: this.state.link
@@ -343,6 +350,7 @@ class App extends React.Component {
         organizator: this.state.organizator,
         id: this.state.id,
         link: this.state.link,
+        url: this.state.url,
         data: this.state.data.toString(),
         user:  this.state.user
       }).then(() => {
@@ -359,6 +367,7 @@ class App extends React.Component {
         col: '',
         link: '',
         data: '',
+        url: '',
         olimpiade: olimpiade
       });
     }
@@ -369,6 +378,7 @@ class App extends React.Component {
         descriere: this.state.descriere,
         organizator: this.state.organizator,
         id: this.state.id,
+        url: this.state.url,
         col: "#00e676",
         data: this.state.data,
         link: this.state.link
@@ -379,6 +389,7 @@ class App extends React.Component {
         descriere: this.state.descriere,
         organizator: this.state.organizator,
         id: this.state.id,
+        url: this.state.url,
         col: "#00e676",
         link: this.state.link,
         data: this.state.data.toString(),
@@ -394,6 +405,7 @@ class App extends React.Component {
         descriere: '',
         id: '',
         col: '',
+        url:'',
         organizator: '',
         link: '',
         data: '',
@@ -407,6 +419,7 @@ class App extends React.Component {
         descriere: this.state.descriere,
         organizator: this.state.organizator,
         id: this.state.id,
+        url: this.state.url,
         col: "#ffe066",
         link: this.state.link,
         data: this.state.data
@@ -418,6 +431,7 @@ class App extends React.Component {
         organizator: this.state.organizator,
         id: this.state.id,
         link: this.state.link,
+        url: this.state.url,
         data: this.state.data.toString(),
         col: "#ffe066",
         user:  this.state.user
@@ -432,6 +446,7 @@ class App extends React.Component {
         descriere: '',
         id: '',
         col: '',
+        url: '',
         organizator: '',
         link: '',
         data: '',
@@ -450,6 +465,7 @@ class App extends React.Component {
         link: this.state.link,
         data: this.state.data,
         col: "#29b6f6",
+        url: this.state.url,
         user:  this.state.user
       };
       database.ref('olimpiade/' + this.state.key).update({
@@ -458,6 +474,7 @@ class App extends React.Component {
         "data": this.state.data.toString(),
         "organizator": this.state.organizator,
         "id": this.state.id,
+        "url":this.state.url,
         "col": "#29b6f6",
         "descriere": this.state.descriere
 
@@ -471,6 +488,7 @@ class App extends React.Component {
         organizator: '',
         id: '',
         col: '',
+        url: '',
         olimpiade: olimpiade,
         editIndex: -1,
         isEdit: false
@@ -484,6 +502,7 @@ class App extends React.Component {
         organizator: this.state.organizator,
         id: this.state.id,
         col: "#00e676",
+        url: this.state.url,
         link: this.state.link,
         data: this.state.data,
         user:  this.state.user
@@ -493,6 +512,7 @@ class App extends React.Component {
         "link": this.state.link,
         "data": this.state.data.toString(),
         "organizator": this.state.organizator,
+        "url": this.state.url,
         "id": this.state.id,
         "col": "#00e676",
         "descriere": this.state.descriere
@@ -506,6 +526,7 @@ class App extends React.Component {
         data: '',
         organizator: '',
         id: '',
+        url: '',
         col: '',
         concursuri: concursuri,
         editIndex: -1,
@@ -520,6 +541,7 @@ class App extends React.Component {
         organizator: this.state.organizator,
         id: this.state.id,
         col: "#ffe066",
+        url: this.state.url,
         link: this.state.link,
         data: this.state.data,
         user:  this.state.user
@@ -528,6 +550,7 @@ class App extends React.Component {
         "name": this.state.name,
         "link": this.state.link,
         "data": this.state.data,
+        "url": this.state.url,
         "organizator": this.state.organizator,
         "id": this.state.id,
         "col": "#ffe066",
@@ -541,6 +564,7 @@ class App extends React.Component {
         link: '',
         data: '',
         col: '',
+        url: '',
         organizator: '',
         id: '',
         altele: altele,
@@ -573,6 +597,7 @@ class App extends React.Component {
       key: object.key,
       link: object.link,
       data: object.data,
+      url: object.url,
       id:object.id,
       organizator: object.organizator,
       descriere: object.descriere,
@@ -584,7 +609,7 @@ class App extends React.Component {
 
 
   triggerDelete(object, index) {
-
+    ToastsStore.success("Contest deleted!");
     if(object.id==='olimpiade'){
       console.log('Deleted olimpiada:',object);
     let olimpiade = [...this.state.olimpiade]
@@ -663,7 +688,9 @@ class App extends React.Component {
       classes
     } = this.props;
     return (
+      
       <div className={classes.root}>
+        <ToastsContainer store={ToastsStore}/>
         <AppBar position="fixed" color="primary" className={classes.appBar}>
           <Toolbar className={styles.toolbar}>
             <Typography variant="h6" color="inherit">
